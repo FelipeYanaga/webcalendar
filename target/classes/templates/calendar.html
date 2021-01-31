@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="us">
+<head>
+    <title>Calendar Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700">
+    <link rel="stylesheet" href="styling.css" th:href="@{styling.css}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav>
+            <div class="logo-wrapper">
+                <div class="logo"> My logo </div>
+            </div>
+            <div class="nav-links">
+                <div class="nav-link">
+                    <a href="calendar.html"> Home </a>
+                </div>
+
+                <div class="nav-link">
+                    <a href="calendar.html"> Foo </a>
+                </div>
+
+                <div class="nav-link">
+                    <a href="calendar.html"> Bar </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <main>
+        <form action="#" method="POST" th:action="@{/calendar}" th:object="${holder}">
+            <input class="invisible-button" type="submit" value="Submit"></input>
+        <div class="calendar-header-wrapper">
+            <div class="month-wrapper">
+                <div class="previous-button">
+                    <button type="button" th:href="next" onclick="location.href='previousmonth'"></button>
+                </div>
+                <div class="month-selector-wrapper">
+                    <label for="month-list"></label>
+                    <input type="text" list="months" id="month-list" th:placeholder="${nowMonth}" th:field="*{monthString}">
+                    <datalist id="months" name="months">
+                        <option th:each="month : ${months}" th:value="${month}" th:text="${month}" th:selected="${month} == ${nowMonth}"></option>
+                    </datalist>
+                </div>
+                <div class="next-button">
+                    <button type="button" th:href="next" onclick="location.href='nextmonth'"></button>
+                </div>
+            </div>
+            <div class="year-wrapper"> 
+                <div class="previous-button">
+                    <button type="button" th:href="next" onclick="location.href='previousyear'"></button>
+                </div>
+                <div class="year-selector-wrapper">
+                    <label for="year-list"></label>
+                    <input type="text" list="years" id="year-list" th:placeholder="${nowYear}">
+                    <datalist id="years" name="years">
+                        <option th:each="year : ${years}" th:value="${year}" th:text="${year}" th:selected="${year} eq ${nowYear}"></option>
+                    </datalist>
+                </div>
+                <div class="next-button">
+                    <button type="button" th:href="next" onclick="location.href='nextyear'"></button>
+                </div>
+            </div>
+        </div>
+        </form>
+        <div class="calendar-wrapper">
+            <div class="calendar">
+                <div th:each="weekday: ${weekdays}">
+                    <div class="weekday-header-wrapper" th:text="${weekday}"/>
+                </div>
+                <div th:each="day: ${days}">
+                    <div class="inside-day">
+                        <div class="day-display" th:if="${day.isCurrent == true}" th:text="${day.thisDay}"/>
+                            <div id="popup1" class="overlay">
+                                <form action="#" method="POST" th:action="@{/test}">
+                                    <div class="popup">
+                                        <h1>New Event</h1>
+                                        <a class="close" href="#"> &times; </a>
+                                        <div class="pop-up-content">
+                                            <div class="name-event">
+                                                <label for="name"></label>
+                                                <input type="text" id="name" placeholder="Title">
+                                            </div>
+                                            <div class="location">
+                                                <label for="location"></label>
+                                                <input type="text" id="location" placeholder="Location">
+                                            </div>
+                                            <div class="start-time">
+                                                <label for="start-time"></label>
+                                                <input type="time" id="start-time" placeholder="Starts">
+                                            </div>
+                                            <div class="end=time">
+                                                <label for="end-time"></label>
+                                                <input type="time" id="end-time" placeholder="Ends">
+                                            </div>
+                                            <div>
+                                                <input type="submit" value="Create Event">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        <div class="day-hidden" th:if="${day.isCurrent == false}" th:text="${day.thisDay}"/>
+                        <a class="button" href="#popup1"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
